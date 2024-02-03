@@ -22,7 +22,7 @@ function appendMessage(string $message): void
         throw new MessageException('빈 메시지 저장은 허용하지 않습니다.');
     }
 
-    $path = $_SERVER['BOT_TOKEN'] ?? $_ENV['STORE_PATH'] ?? false;
+    $path = $_SERVER['STORE_PATH'] ?? $_ENV['STORE_PATH'] ?? false;
     $dir  = dirname($path);
 
     if (!file_exists($dir) || !is_dir($dir) || !is_executable($dir) || !is_writable($dir)) {
