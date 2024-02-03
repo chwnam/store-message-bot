@@ -33,3 +33,7 @@ BOT_TOKEN=1234568901:API_BOT_TOKEN_RANDOM_STRINGS
 # 메시지 저장 경로. 반드시 지정해야 합니다.
 STORE_PATH=/path/to/message.md
 ```
+
+## 실행하기
+
+경로를 잘 설정한 다음, `composer run` 으로 실행합니다.

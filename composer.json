@@ -16,5 +16,11 @@
             "name": "changwoo",
             "email": "ep6tri@hotmail.com"
         }
-    ]
+    ],
+    "scripts": {
+        "run": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php ./index.php"
+        ]
+    }
 }
