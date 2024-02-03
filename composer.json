@@ -1,0 +1,21 @@
+{
+    "name": "changwoo/store-message-bot",
+    "description": "내 메시지를 서버에 받아 놓는 텔레그램 봇",
+    "type": "telegram-bot",
+    "require": {
+        "php": "^8.2",
+        "nutgram/nutgram": "^4.15"
+    },
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Changwoo\\StoreMessageBot\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "changwoo",
+            "email": "ep6tri@hotmail.com"
+        }
+    ]
+}
