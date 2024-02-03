@@ -1,6 +1,10 @@
-# JetBrains IDE
 .idea
 .vscode
 .DS_Store
+.env
+.env.*
+
+!README.md
+*.md
 
 /vendor/

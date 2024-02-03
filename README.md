@@ -7,3 +7,29 @@
 
 이렇게 저장된 정보는 클라우드를 통해 여러 장치에 걸쳐 동기화되고,
 옵시디언 같은 노트 앱에서 매우 편리하게 저장된 링크를 편집할 수 있도록 한다.
+
+
+## 설정법
+
+봇 토큰을 받은 다음 환경 변수에 `BOT_TOKEN` 을 설정합니다.
+
+```shell
+# .bashrc
+export BOT_TOKEN=1234568901:API_BOT_TOKEN_RANDOM_STRINGS
+```
+
+또는 .dotenv 파일에 저장해도 무방합니다.
+
+우선 템플릿 파일을 복사한 후,
+```shell
+cp dotenv.dist .env
+```
+
+봇 토큰과 저장할 경로를 저장해 주면 됩니다.
+```dotenv
+# 봇 토큰. 반드시 지정해야 합니다.
+BOT_TOKEN=1234568901:API_BOT_TOKEN_RANDOM_STRINGS
+
+# 메시지 저장 경로. 반드시 지정해야 합니다.
+STORE_PATH=/path/to/message.md
+```
