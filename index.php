@@ -5,13 +5,20 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\RunningMode\Polling;
+use SergiX44\Nutgram\RunningMode\Webhook;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 class MessageException extends Exception { }
 
+function getEnvVar(string $key): string|null
+{
+    return $_SERVER[$key] ?? $_ENV[$key] ?? null;
+}
+
 /**
  * @param string $message
+ *
  * @return void
  *
  * @throws MessageException
@@ -22,7 +29,7 @@ function appendMessage(string $message): void
         throw new MessageException('빈 메시지 저장은 허용하지 않습니다.');
     }
 
-    $path = $_SERVER['STORE_PATH'] ?? $_ENV['STORE_PATH'] ?? false;
+    $path = getEnvVar('STORE_PATH') ?? false;
     $dir  = dirname($path);
 
     if (!file_exists($dir) || !is_dir($dir) || !is_executable($dir) || !is_writable($dir)) {
@@ -46,23 +53,27 @@ $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 try {
-    $bot = new Nutgram($_SERVER['BOT_TOKEN'] ?? $_ENV['BOT_TOKEN'] ?? '');
+    $token = getEnvVar('BOT_TOKEN') ?? '';
+    $bot   = new Nutgram($token);
 } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
     die($e->getMessage());
 }
 
-$bot->setRunningMode(Polling::class);
+$runningMode = getEnvVar('RUNNING_MODE') ?? 'webhook';
+if (!in_array($runningMode, ['polling', 'webhook'], true)) {
+    $runningMode = 'webhook';
+}
 
-$bot->onText('My name is {name}', function (Nutgram $bot, string $name) {
-    $bot->sendMessage("Hi $name");
-});
+$bot->setRunningMode('polling' === $runningMode ? Polling::class : Webhook::class);
 
-$bot->onText('(.+)', function (Nutgram $bot, string $message) {
-    try {
-        appendMessage($message);
-        // $bot->sendMessage('메시지를 성공적으로 저장했습니다!');
-    } catch (MessageException $e) {
-        $bot->sendMessage('메시지 저장 실패: ' . $e->getMessage());
+$bot->onMessage(function (Nutgram $bot) {
+    $message = $bot->message()?->text;
+    if ($message) {
+        try {
+            appendMessage($message);
+        } catch (MessageException $e) {
+            $bot->sendMessage('메시지 저장 실패: ' . $e->getMessage());
+        }
     }
 });
 
