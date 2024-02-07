@@ -41,12 +41,27 @@ function appendMessage(string $message): void
         throw new MessageException('파일 열기에 실패했습니다.');
     }
 
-    $now     = date_create_immutable('now', new DateTImeZone('Asia/Seoul'))->format('Y-m-d H:i:s');
-    $message = htmlspecialchars(trim($message));
-    $content = sprintf("[%s] %s\n", $now, $message);
+    $content = formatMessage($message);
 
     fwrite($fp, $content);
     fclose($fp);
+}
+
+function formatMessage(string $message): string
+{
+    $message = trim($message);
+    $message = preg_replace('/\s+/', ' ', $message);
+    $message = htmlspecialchars($message);
+
+    if (preg_match('/[\[\]#]/', $message)) {
+        $message = '`' . $message . '`';
+    }
+
+    return sprintf(
+        "[%s] %s\n",
+        date_create_immutable('now', new DateTImeZone('Asia/Seoul'))->format('Y-m-d H:i:s'),
+        $message
+    );
 }
 
 $dotenv = Dotenv::createImmutable(__DIR__);
