@@ -45,22 +45,28 @@ function appendMessage(string $message): void
         throw new MessageException('파일 열기에 실패했습니다.');
     }
 
-    $content = formatMessage($message);
+    $is_markdown = str_ends_with($path, '.md');
+    $content     = formatMessage($message, $is_markdown);
 
     fwrite($fp, $content);
     fclose($fp);
 }
 
-function formatMessage(string $message): string
+function formatMessage(string $message, bool $is_markdown): string
 {
     $message = trim($message);
     $message = preg_replace('/\s+/', ' ', $message);
     $message = htmlspecialchars($message);
 
+    if ($is_markdown) {
+        $message = preg_replace('/(\[|#+)/', '\\$1', $message);
+    }
+
     return sprintf(
-        "[%s] %s\r\n",
+        "%s[%s] %s\r\n",
+        $is_markdown ? '* \\' : '',
         date_create_immutable('now', new DateTImeZone('Asia/Seoul'))->format('Y-m-d H:i:s'),
-        $message
+        $message,
     );
 }
 
