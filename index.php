@@ -59,7 +59,7 @@ function formatMessage(string $message, bool $is_markdown): string
     $message = htmlspecialchars($message);
 
     if ($is_markdown) {
-        $message = preg_replace('/(\[|#+)/', '\\$1', $message);
+        $message = preg_replace('/(\[|#+)/', '\\\\1', $message);
     }
 
     return sprintf(
