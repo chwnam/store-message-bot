@@ -90,6 +90,7 @@ $bot->onMessage(function (Nutgram $bot) {
             $bot->sendMessage('메시지 저장 실패: ' . $e->getMessage());
         }
     }
+    $bot->sendMessage("메시지를 저장하였습니다.");
 });
 
 try {
