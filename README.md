@@ -36,4 +36,6 @@ STORE_PATH=/path/to/message.md
 
 ## 실행하기
 
-경로를 잘 설정한 다음, `composer run` 으로 실행합니다.
+폴링 방식인 경우 `composer start`로 실행합니다.
+[웹 훅 방식](https://core.telegram.org/bots/api#getting-updates)인 경우 웹 훅 경로를 잘 인식시킨 후, `webhook.php`를 CLI로 실행합니다.
+
