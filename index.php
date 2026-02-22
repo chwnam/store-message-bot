@@ -57,12 +57,8 @@ function formatMessage(string $message): string
     $message = preg_replace('/\s+/', ' ', $message);
     $message = htmlspecialchars($message);
 
-    if (preg_match('/[\[\]#]/', $message)) {
-        $message = '`' . $message . '`';
-    }
-
     return sprintf(
-        "`[%s]` %s\r\n",
+        "[%s] %s\r\n",
         date_create_immutable('now', new DateTImeZone('Asia/Seoul'))->format('Y-m-d H:i:s'),
         $message
     );
