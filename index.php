@@ -32,8 +32,12 @@ function appendMessage(string $message): void
     $path = getEnvVar('STORE_PATH') ?? false;
     $dir  = dirname($path);
 
-    if (!file_exists($dir) || !is_dir($dir) || !is_executable($dir) || !is_writable($dir)) {
+    if (!file_exists($dir) || !is_dir($dir) || !is_executable($dir)) {
         throw new MessageException('저장 경로가 올바르지 않거나, 쓰기/접근 권한이 부족합니다.');
+    }
+
+    if (file_exists($path) && !is_writable($path)) {
+        throw new MessageException('파일이 존재하지만, 파일에 쓰기 권한이 없습니다.');
     }
 
     $fp = fopen($path, 'a');
